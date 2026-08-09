@@ -1,0 +1,51 @@
+:root{
+    --guideline-1: #fff4c7;
+    --guideline-2: #d0d8a6;
+    --guideline-3: #a0bd8c;
+    --guideline-4: #6da378;
+    --guideline-5: #338869;
+    --guideline-6: #006d5f;
+    --guideline-7: #1fe4ca;
+}
+
+.bg-guideline-1{
+    background-color: var(--guideline-1);
+}
+.color-guideline-1{
+    color: var(--guideline-1);
+}
+
+.bg-guideline-2{
+    background-color: var(--guideline-2);
+}
+.color-guideline-2{
+    color: var(--guideline-2);
+}
+
+.bg-guideline-3{
+    background-color: var(--guideline-3);
+}
+.color-guideline-3{
+    color: var(--guideline-3);
+}
+
+.bg-guideline-4{
+    background-color: var(--guideline-4);
+}
+.color-guideline-4{
+    color: var(--guideline-4);
+}
+
+.bg-guideline-5{
+    background-color: var(--guideline-5);
+}
+.color-guideline-5{
+    color: var(--guideline-5);
+}
+
+.bg-guideline-6{
+    background-color: var(--guideline-6);
+}
+.color-guideline-6{
+    color: var(--guideline-6);
+}

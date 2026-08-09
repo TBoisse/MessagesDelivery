@@ -1,13 +1,41 @@
-.pill-containers div{
+.pill-containers > div{
     padding: 4px 8px;
     border-radius: 50px;
-    color: #c9c9c9;
-    border: 1px solid #c9c9c9;
+    color: #5d5d5d;
+    border: 1px solid #5d5d5d;
     cursor: pointer;
 }
 
 .pill-containers .active{
-    color: #fdff9c;
-    border: 1px solid #fdff9c;
-    background: #898b00;
+    color: var(--guideline-7);
+    border: 1px solid var(--guideline-6);
+    background: var(--guideline-4);
+}
+
+.chat-containers > div{
+    padding: 4px 12px;
+}
+
+.chat-containers > div > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.chat-containers > div > .active {
+    background-color: var(--guideline-2);
+}
+
+.chat-containers > div > div > div{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: background 0.2s;
+}
+
+.chat-containers > div:hover > div{
+    background-color: var(--guideline-2);
 }
