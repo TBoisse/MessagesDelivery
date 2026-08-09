@@ -1,0 +1,13 @@
+.pill-containers div{
+    padding: 4px 8px;
+    border-radius: 50px;
+    color: #c9c9c9;
+    border: 1px solid #c9c9c9;
+    cursor: pointer;
+}
+
+.pill-containers .active{
+    color: #fdff9c;
+    border: 1px solid #fdff9c;
+    background: #898b00;
+}
