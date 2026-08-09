@@ -29,11 +29,27 @@
     background-color: var(--guideline-2);
 }
 
-.chat-containers > div > div > div{
+.chat-containers > div > div > div:nth-child(1){
     display: flex;
     align-items: center;
     gap: 12px;
     transition: background 0.2s;
+}
+
+.chat-containers > div > div > div:nth-child(2){
+    display: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.chat-containers > div > div > div:nth-child(2).unseen{
+    display: block;
+    background-color: var(--guideline-6);
+    color: var(--guideline-1);
 }
 
 .chat-containers > div:hover > div{
