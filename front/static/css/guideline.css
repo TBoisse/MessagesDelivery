@@ -49,3 +49,10 @@
 .color-guideline-6{
     color: var(--guideline-6);
 }
+
+.bg-guideline-7{
+    background-color: var(--guideline-7);
+}
+.color-guideline-7{
+    color: var(--guideline-7);
+}

@@ -4,103 +4,104 @@
 
 {% block extra_styles %}
 <style>
-    @import url("/static/css/guideline.css");
     @import url("/static/css/index.css");
 </style>
 {% endblock %}
 
 {% block extra_content %}
-<div class="flex flex-col w-full md:w-2/5 h-full">
-    <div class="flex flex-col gap-4 py-4 bg-guideline-3">
-        <div class="flex justify-between items-center px-5 py-2">
-            <p class="font-black text-2xl text-white">MessagesDelivery</p>
-            <div class="flex gap-4">
-                <img class="w-6 cursor-pointer" src="/static/image/mask/white-add.svg" alt="add message">
-                <img class="w-6 cursor-pointer" src="/static/image/mask/white-settings.svg" alt="settings">
-            </div>
-        </div>
-        <div class="flex gap-3 px-5 py-2 pill-containers">
-            <div class="active">Toutes</div>
-            <div>Non lues</div>
-            <div>Favoris</div>
-        </div>
-    </div>
-    <div class="flex flex-col flex-1 bg-guideline-1 chat-containers">
-        <!-- WHEN DONE, CAN REMOVE EVERYTHING FROM HERE -->
-        <div>
-            <div class="active">
-                <div>
-                    <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
-                    <p>Chat Name</p>
+<div class="flex h-screen">
+    <div class="flex flex-col w-full md:w-2/5 h-full">
+        <div class="flex flex-col gap-4 py-4 bg-guideline-3">
+            <div class="flex justify-between items-center px-5 py-2">
+                <p class="font-black text-2xl text-white">MessagesDelivery</p>
+                <div class="flex gap-4">
+                    <img class="w-6 cursor-pointer" src="/static/image/mask/white-add.svg" alt="add message">
+                    <img class="w-6 cursor-pointer" src="/static/image/mask/white-settings.svg" alt="settings">
                 </div>
-                <div class="unseen">1</div>
+            </div>
+            <div class="flex gap-3 px-5 py-2 pill-containers">
+                <div class="active">Toutes</div>
+                <div>Non lues</div>
+                <div>Favoris</div>
             </div>
         </div>
-        <div>
+        <div class="flex flex-col flex-1 bg-guideline-1 chat-containers">
+            <!-- WHEN DONE, CAN REMOVE EVERYTHING FROM HERE -->
+            <div>
+                <div class="active">
+                    <div>
+                        <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
+                        <p>Chat Name</p>
+                    </div>
+                    <div class="unseen">1</div>
+                </div>
+            </div>
             <div>
                 <div>
-                    <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
-                    <p>Chat Name</p>
+                    <div>
+                        <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
+                        <p>Chat Name</p>
+                    </div>
+                    <div>0</div>
                 </div>
-                <div>0</div>
             </div>
-        </div>
-        <div>
             <div>
                 <div>
-                    <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
-                    <p>Chat Name</p>
+                    <div>
+                        <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
+                        <p>Chat Name</p>
+                    </div>
+                    <div>0</div>
                 </div>
-                <div>0</div>
             </div>
-        </div>
-        <div>
             <div>
                 <div>
-                    <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
-                    <p>Chat Name</p>
+                    <div>
+                        <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
+                        <p>Chat Name</p>
+                    </div>
+                    <div>0</div>
                 </div>
-                <div>0</div>
             </div>
-        </div>
-        <div>
             <div>
                 <div>
-                    <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
-                    <p>Chat Name</p>
-                </div>
-                <div>0</div>
-            </div>
-        </div>
-        <!-- UP TO HERE -->
-    </div>
-</div>
-<div class="hidden md:flex flex-col h-full w-full md:w-3/5 messages-container">
-    <div class="flex items-center gap-5 px-10 py-5 w-full bg-guideline-6">
-        <img class="w-7 md:w-0 block md:hidden" src="/static/image/mask/white-back.svg" alt="back button">
-        <div class="flex gap-3 text-white font-bold">
-            <img class="w-7" src="/static/image/letters/letter-a.svg" alt="chat icon">
-            <p>Chat Name</p>
-        </div>
-    </div>
-    <div class="flex flex-col flex-1 overflow-y-auto" id="messages-chat">
-        <div class="flex items-center justify-center">Start of chat</div>
-    </div>
-    <div class="w-full px-10 py-3 pt-0">
-        <div class="flex items-center w-full rounded-lg gap-5 p-3">
-            <div id="message-input" class="relative min-w-0 w-full">
-                <div id="message-content" spellcheck="true" tabindex="10" contenteditable="true" role="textbox">
-                </div>
-                <div id="message-placeholder">
-                    Entrez votre message
+                    <div>
+                        <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
+                        <p>Chat Name</p>
+                    </div>
+                    <div>0</div>
                 </div>
             </div>
-            <img class="w-8 cursor-pointer self-end" src="/static/image/mask/green-send.svg" alt="">
+            <!-- UP TO HERE -->
+        </div>
+    </div>
+    <div class="hidden md:flex flex-col h-full w-full md:w-3/5 messages-container">
+        <div class="flex items-center gap-5 px-10 py-5 w-full bg-guideline-6">
+            <img class="w-7 md:w-0 block md:hidden" src="/static/image/mask/white-back.svg" alt="back button">
+            <div class="flex gap-3 text-white font-bold">
+                <img class="w-7" src="/static/image/letters/letter-a.svg" alt="chat icon">
+                <p>Chat Name</p>
+            </div>
+        </div>
+        <div class="flex flex-col flex-1 overflow-y-auto" id="messages-chat">
+            <div class="flex items-center justify-center">Start of chat</div>
+        </div>
+        <div class="w-full px-10 py-3 pt-0">
+            <div class="flex items-center w-full rounded-lg gap-5 p-3">
+                <div id="message-input" class="relative min-w-0 w-full">
+                    <div id="message-content" spellcheck="true" tabindex="10" contenteditable="true" role="textbox">
+                    </div>
+                    <div id="message-placeholder">
+                        Entrez votre message
+                    </div>
+                </div>
+                <img class="w-8 cursor-pointer self-end" src="/static/image/mask/green-send.svg" alt="">
+            </div>
         </div>
     </div>
 </div>
 {% endblock %}
-{% block extra_scripts%}
+{% block extra_scripts %}
 <script src="/static/js/onload.js"></script>
 <script src="/static/js/messages.js"></script>
 <script src="/static/js/index.js"></script>

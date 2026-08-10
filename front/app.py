@@ -12,3 +12,17 @@ async def index(request : Request):
         request=request,
         name="index.html"
     )
+
+@app.get("/user/login")
+async def login(request : Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="login.html"
+    )
+
+@app.get("/user/signin")
+async def signin(request : Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="signin.html"
+    )
