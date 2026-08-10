@@ -64,6 +64,15 @@
     background-color: var(--guideline-3);
 }
 
+#messages-chat > div{
+    position: relative;
+    width: 100%;
+}
+
+#messages-chat > div > div:last-child{
+    padding-bottom: 10px;
+}
+
 #message-content{
     position: relative;
     z-index: 10;
