@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>{% block title %}{% endblock %}</title>
+    <style>
+        @import url("/static/css/guideline.css");
+    </style>
+    {% block extra_styles %}
+    {% endblock %}
+</head>
+<body>
+    <div class="flex h-screen">
+    {% block extra_content %}
+    {% endblock %}
+    </div>
+    {% block extra_scripts %}
+    {% endblock %}
+</body>
+</html>
