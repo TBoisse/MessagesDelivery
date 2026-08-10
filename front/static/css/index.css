@@ -60,7 +60,7 @@
     background-color: #fff4f4;
 }
 
-.messages-container > div:nth-child(2) > div {
+.messages-container > div:nth-child(3) > div {
     background-color: var(--guideline-3);
 }
 
