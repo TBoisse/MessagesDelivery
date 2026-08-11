@@ -1,5 +1,5 @@
 # extern imports
-from fastapi import Depends, FastAPI, HTTPException, Response, Cookie, Request
+from fastapi import Depends, FastAPI, HTTPException, Response, Cookie
 from fastapi.security import HTTPBearer
 from sqlalchemy import select
 from sqlalchemy.orm import Session
