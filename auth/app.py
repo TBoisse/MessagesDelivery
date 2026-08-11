@@ -34,11 +34,16 @@ def login(request : Request, login_request: LoginRequest, response: Response, db
         )
     token = create_access_token(str(login_request.phone_number))
     access_tokens : list = json.loads(request.cookies.get(COOKIE_NAME, "[]"))
-    if token in access_tokens:
-        user_index = access_tokens.index(token)
-        return {"user_index" : user_index}
-    access_tokens.append(token)
-    user_index = len(access_tokens) - 1
+    phones_decoded = [
+        0 if (decoded := decode_token(t))[1] != 200 else decoded[0]["sub"]
+        for t in access_tokens
+    ]
+    if login_request.phone_number in phones_decoded:
+        user_index = phones_decoded.index(login_request.phone_number)
+        access_tokens[user_index] = token # mainly reset the expired date
+    else:
+        access_tokens.append(token)
+        user_index = len(access_tokens) - 1
     response.set_cookie(
         key=COOKIE_NAME,
         value=json.dumps(access_tokens),
