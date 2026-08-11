@@ -3,3 +3,5 @@ pyjwt
 pydantic
 uvicorn
 cryptography
+sqlalchemy
+psycopg2-binary
