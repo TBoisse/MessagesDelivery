@@ -1,7 +1,7 @@
 # native imports
 import json
 # extern imports
-from fastapi import Depends, FastAPI, HTTPException, Response, Cookie, Request
+from fastapi import Depends, FastAPI, HTTPException, Response, Request
 from fastapi.security import HTTPBearer
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -21,7 +21,12 @@ COOKIE_NAME = "access_token"
 # ############################
 
 @app.post("/login")
-def login(request : Request, login_request: LoginRequest, response: Response, db: Session = Depends(get_db)):
+def login(
+    request : Request,
+    login_request: LoginRequest,
+    response: Response,
+    db: Session = Depends(get_db)
+    ):
     # TODO : look up async Session and db execute
     #! Direct Cookie class can be passed instead of request
     user = db.scalar(
@@ -55,7 +60,12 @@ def login(request : Request, login_request: LoginRequest, response: Response, db
     return {"user_index" : user_index}
 
 @app.post("/signin")
-def signin(request : Request, signin_request: SigninRequest, response: Response, db: Session = Depends(get_db)):
+def signin(
+    request : Request,
+    signin_request: SigninRequest,
+    response: Response,
+    db: Session = Depends(get_db)
+    ):
     user = User(
         username=signin_request.username,
         phone_number=signin_request.phone_number,
@@ -117,7 +127,7 @@ def verify(request: Request):
     return Response(status_code=code)
 
 @app.get("/verify/hard")
-def verify(request: Request, db: Session = Depends(get_db)):
+def verify_hard(request: Request, db: Session = Depends(get_db)):
     user_index = request.headers.get("X-User-Index")
     try:
         user_index = int(user_index)
@@ -133,5 +143,5 @@ def verify(request: Request, db: Session = Depends(get_db)):
         select(User).where(User.phone_number == payload["sub"])
     )
     if user is None:
-        raise Response(status_code=401)
+        return Response(status_code=401)
     return Response(status_code=200)

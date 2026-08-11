@@ -4,8 +4,8 @@ from pathlib import Path
 # extern imports
 import jwt
 
-PRIVATE_KEY = Path("/run/secrets/jwt_private").read_text()
-PUBLIC_KEY = Path("/run/secrets/jwt_public").read_text()
+PRIVATE_KEY = Path("/run/secrets/jwt_private").read_text(encoding="utf-8")
+PUBLIC_KEY = Path("/run/secrets/jwt_public").read_text(encoding="utf-8")
 ALGORITHM = "RS256"
 MAX_AGE = 3600 # one hour in seconds
 
