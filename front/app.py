@@ -1,3 +1,6 @@
+"""
+This module represents the front endpoints.
+"""
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -8,6 +11,9 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/")
 async def index(request : Request):
+    """
+    Front index page.
+    """
     return templates.TemplateResponse(
         request=request,
         name="index.html"
@@ -15,6 +21,9 @@ async def index(request : Request):
 
 @app.get("/user/login")
 async def login(request : Request):
+    """
+    Login page.
+    """
     return templates.TemplateResponse(
         request=request,
         name="login.html"
@@ -22,6 +31,9 @@ async def login(request : Request):
 
 @app.get("/user/signin")
 async def signin(request : Request):
+    """
+    Signin page.
+    """
     return templates.TemplateResponse(
         request=request,
         name="signin.html"

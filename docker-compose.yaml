@@ -1,5 +1,20 @@
 services:
 
+  auth-server:
+    image: auth-server:latest
+    build:
+      context: auth
+      dockerfile: Dockerfile
+    expose:
+      - 3001
+    networks:
+      - internal_network
+    secrets:
+      - jwt_private
+      - jwt_public
+    environment:
+      POSTGRES_URL: "postgresql://$POSTGRES_USER:$POSTGRES_USER@postgres:5432/$POSTGRES_USER"
+
   front-server:
     image: front-server:latest
     build:
@@ -21,7 +36,28 @@ services:
     restart: unless-stopped
     networks:
       - internal_network
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_USER
+      POSTGRES_DB: $POSTGRES_USER
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - internal_network
 
 networks:
   internal_network:
     driver: bridge
+
+volumes:
+  postgres_data:
+
+secrets:
+  jwt_private:
+    file: ./secrets/jwt_private.pem
+
+  jwt_public:
+    file: ./secrets/jwt_public.pem
