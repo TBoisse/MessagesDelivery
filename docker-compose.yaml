@@ -1,5 +1,18 @@
 services:
 
+  auth-server:
+    image: auth-server:latest
+    build:
+      context: auth
+      dockerfile: Dockerfile
+    expose:
+      - 3001
+    networks:
+      - internal_network
+    secrets:
+      - jwt_private
+      - jwt_public
+
   front-server:
     image: front-server:latest
     build:
@@ -25,3 +38,11 @@ services:
 networks:
   internal_network:
     driver: bridge
+
+
+secrets:
+  jwt_private:
+    file: ./secrets/jwt_private.pem
+
+  jwt_public:
+    file: ./secrets/jwt_public.pem
