@@ -12,6 +12,8 @@ services:
     secrets:
       - jwt_private
       - jwt_public
+    environment:
+      POSTGRES_URL: "postgresql://$POSTGRES_USER:$POSTGRES_USER@postgres:5432/$POSTGRES_USER"
 
   front-server:
     image: front-server:latest
@@ -34,11 +36,24 @@ services:
     restart: unless-stopped
     networks:
       - internal_network
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_USER
+      POSTGRES_DB: $POSTGRES_USER
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - internal_network
 
 networks:
   internal_network:
     driver: bridge
 
+volumes:
+  postgres_data:
 
 secrets:
   jwt_private:
