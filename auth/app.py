@@ -1,5 +1,7 @@
+# native imports
+import json
 # extern imports
-from fastapi import Depends, FastAPI, HTTPException, Response, Cookie
+from fastapi import Depends, FastAPI, HTTPException, Response, Cookie, Request
 from fastapi.security import HTTPBearer
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -12,38 +14,47 @@ from src.database import get_db, save_to_db
 app = FastAPI()
 security = HTTPBearer()
 
+COOKIE_NAME = "access_token"
+
 # ############################
 # USER
 # ############################
 
 @app.post("/login")
-def login(request: LoginRequest, response: Response, db: Session = Depends(get_db)):
+def login(request : Request, login_request: LoginRequest, response: Response, db: Session = Depends(get_db)):
     # TODO : look up async Session and db execute
+    #! Direct Cookie class can be passed instead of request
     user = db.scalar(
-        select(User).where(User.phone_number == request.phone_number)
+        select(User).where(User.phone_number == login_request.phone_number)
     )
     if user is None:
         raise HTTPException(
             status_code=401,
             detail="Invalid credentials",
         )
-    token = create_access_token(str(request.phone_number))
+    token = create_access_token(str(login_request.phone_number))
+    access_tokens : list = json.loads(request.cookies.get(COOKIE_NAME, "[]"))
+    if token in access_tokens:
+        user_index = access_tokens.index(token)
+        return {"user_index" : user_index}
+    access_tokens.append(token)
+    user_index = len(access_tokens) - 1
     response.set_cookie(
-        key="access_token",
-        value=token,
+        key=COOKIE_NAME,
+        value=json.dumps(access_tokens),
         httponly=True,
         secure=True,
         samesite="lax",
         max_age=MAX_AGE,
     )
-    return {"message" : "logged in"}
+    return {"user_index" : user_index}
 
 @app.post("/signin")
-def signin(request: SigninRequest, response: Response, db: Session = Depends(get_db)):
+def signin(request : Request, signin_request: SigninRequest, response: Response, db: Session = Depends(get_db)):
     user = User(
-        username=request.username,
-        phone_number=request.phone_number,
-        email=request.email,
+        username=signin_request.username,
+        phone_number=signin_request.phone_number,
+        email=signin_request.email,
     )
 
     message, code = save_to_db(db, user)
@@ -53,17 +64,20 @@ def signin(request: SigninRequest, response: Response, db: Session = Depends(get
             detail=message
         )
 
-    token = create_access_token(str(request.phone_number))
+    token = create_access_token(str(signin_request.phone_number))
+    access_tokens : list = json.loads(request.cookies.get(COOKIE_NAME, "[]"))
+    access_tokens.append(token)
+    user_index = len(access_tokens) - 1
 
     response.set_cookie(
-        key="access_token",
-        value=token,
+        key=COOKIE_NAME,
+        value=json.dumps(access_tokens),
         httponly=True,
         secure=True,
         samesite="lax",
         max_age=MAX_AGE,
     )
-    return {"message" : "signed in"}
+    return {"user_index" : user_index}
 
 # ############################
 # ADMIN
@@ -85,17 +99,29 @@ def get_users(db: Session = Depends(get_db)):
 # ############################
 
 @app.get("/verify")
-def verify(access_token: str | None = Cookie(default=None)):
-    if not access_token:
+def verify(request: Request):
+    user_index = request.headers.get("X-User-Index")
+    try:
+        user_index = int(user_index)
+    except Exception:
         return Response(status_code=401)
-    _, code = decode_token(access_token)
+    access_tokens : list = json.loads(request.cookies.get(COOKIE_NAME, "[]"))
+    if not access_tokens:
+        return Response(status_code=401)
+    _, code = decode_token(access_tokens[user_index])
     return Response(status_code=code)
 
 @app.get("/verify/hard")
-def verify(access_token: str | None = Cookie(default=None), db: Session = Depends(get_db)):
-    if not access_token:
+def verify(request: Request, db: Session = Depends(get_db)):
+    user_index = request.headers.get("X-User-Index")
+    try:
+        user_index = int(user_index)
+    except Exception:
         return Response(status_code=401)
-    payload, code = decode_token(access_token)
+    access_tokens : list = json.loads(request.cookies.get(COOKIE_NAME, "[]"))
+    if not access_tokens:
+        return Response(status_code=401)
+    payload, code = decode_token(access_tokens[user_index])
     if code != 200:
         return Response(status_code=code)
     user = db.scalar(

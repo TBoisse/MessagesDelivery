@@ -19,7 +19,8 @@ document.getElementById("signin-form").addEventListener("submit", async (event) 
     });
 
     if (response.ok) {
-        window.location.href = "/";
+        const result = await response.json();
+        window.location.href = `/u/${result["user_index"]}/`;
         return;
     }
 

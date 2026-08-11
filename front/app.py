@@ -6,8 +6,8 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-@app.get("/")
-async def index(request : Request):
+@app.get("/u/{user_index}/")
+async def index(request : Request, user_index : int):
     return templates.TemplateResponse(
         request=request,
         name="index.html"
