@@ -23,11 +23,11 @@ def create_access_token(user_id: str) -> str:
 
 def decode_token(token):
     try:
-        _ = jwt.decode(
+        payload = jwt.decode(
             token,
             PUBLIC_KEY,
             algorithms=[ALGORITHM]
         )
-        return "", 200
+        return payload, 200
     except jwt.PyJWTError:
-        return "Wrong token", 401
+        return {}, 401

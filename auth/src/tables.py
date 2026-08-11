@@ -9,7 +9,7 @@ class User(Base):
 
     user_id = Column(Integer, primary_key=True, index=True)
     username = Column(String(100), nullable=False)
-    phone_number = Column(String(30), nullable=True)
+    phone_number = Column(String(30), nullable=True, unique=True)
     email = Column(String(255), nullable=False, unique=True)
 
 class Chat(Base):
