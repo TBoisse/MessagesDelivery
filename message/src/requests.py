@@ -7,3 +7,7 @@ class CreateChatRequest(BaseModel):
 
 class DeleteChatRequest(BaseModel):
     chat_id : str
+    
+class CreateMessageRequest(BaseModel):
+    chat_id : str
+    content : str

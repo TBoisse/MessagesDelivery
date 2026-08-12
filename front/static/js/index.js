@@ -2,18 +2,17 @@ const messagesChat = document.getElementById("messages-chat");
 const btnAdd = document.getElementById("btn-add");
 const btnCreateChat = document.getElementById("btn-create-chat");
 const btnSettings = document.getElementById("btn-settings");
+const btnMessageSend = document.getElementById("btn-message-send");
 
-// const chat = new Chat();
-
-function initChat(initialMessages, user){
+function displayChat(messages){
+    const chat = new Chat();
     let lastBlock = null;
     messages.forEach(message => {
         const createNewBlock = chat.appendSpread(message.user, message.content, message.hour);
-        const isUser = message.user == user;
         if(createNewBlock){
             lastBlock = document.createElement("div");
             lastBlock.innerHTML = `
-                <div class="absolute h-full ${(isUser) ? "right-3" : "left-3"} top-2">
+                <div class="absolute h-full ${(message.is_user) ? "right-3" : "left-3"} top-2">
                     <img class="w-5" src="/static/image/letters/letter-a.svg" alt="user icon">
                 </div>
             `;
@@ -22,8 +21,8 @@ function initChat(initialMessages, user){
         const messageDiv = document.createElement("div");
         messageDiv.className = "pb-0.5";
         messageDiv.innerHTML = `
-            <div class="flex ${(isUser) ? "justify-end" : "justify-start"} px-10">
-                <div class="relative ${(isUser) ? "bg-guideline-4" : "bg-guideline-6"} max-w-[90%] sm:max-w-[80%] lg:max-w-[70%] rounded-lg">
+            <div class="flex ${(message.is_user) ? "justify-end" : "justify-start"} px-10">
+                <div class="relative ${(message.is_user) ? "bg-guideline-4" : "bg-guideline-6"} max-w-[90%] sm:max-w-[80%] lg:max-w-[70%] rounded-lg">
                     <div class="flex flex-col items-center p-2">
                     ${
                         (chat.isFirstMessageLastBlock() ? `<div class="w-full text-start font-bold text-white">
@@ -70,10 +69,38 @@ btnCreateChat.addEventListener("click", async () => {
         await updateChatList();
         hidePopup();
         hidePopupType("popup-create-chat");
+        document.getElementById("input-chat-name").value = "";
+        document.getElementById("input-chat-description").value = "";
         return;
     }
     
     alert(response.body);
+
+});
+
+btnMessageSend.addEventListener("click", async () => {
+    let messageContent = document.getElementById("message-content").innerText.trim();
+    if(messageContent.length == 0){
+        return;
+    }
+    const userIndex = getUserIndex();
+    const response = await fetch("/message/message", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-User-Index": userIndex
+        },
+        credentials: "same-origin",
+        body: JSON.stringify({
+            content : messageContent,
+            chat_id : currentChatId
+        })
+    });
+
+    if (response.ok) {
+        document.getElementById("message-content").innerText = "";
+        return;
+    }
 
 });
 
