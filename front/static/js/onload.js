@@ -33,19 +33,33 @@ function buildChatsClick(){
     const chats = document.querySelectorAll(".chat-containers > div");
     chats.forEach(chat => {
         chat.querySelector("div").addEventListener("click", e => {
-            chats.forEach(chat => {
-                chat.querySelector("div").classList.remove("active");
-            });
-            e.target.classList.add("active");
-            currentChatId = chat.dataset.chatId;
-            messageContainers.classList.add("flex");
-            messageContainers.classList.remove("hidden");
-            if(deviceWidth < 768){
-                sideBar.classList.add("hidden");
-                sideBar.classList.remove("flex");
+            if(e.target.classList.contains("active")){
+                e.target.classList.remove("active");
+                currentChatId = "";
+                messageContainers.classList.remove("flex");
+                messageContainers.classList.add("hidden");
+                if(deviceWidth < 768){
+                    sideBar.classList.remove("hidden");
+                    sideBar.classList.add("flex");
+                }else{
+                    ghostMessageContainers.classList.add("md:flex");
+                    ghostMessageContainers.classList.remove("md:hidden");
+                }
             }else{
-                ghostMessageContainers.classList.remove("md:flex");
-                ghostMessageContainers.classList.add("md:hidden");
+                chats.forEach(chat => {
+                    chat.querySelector("div").classList.remove("active");
+                });
+                e.target.classList.add("active");
+                currentChatId = chat.dataset.chatId;
+                messageContainers.classList.add("flex");
+                messageContainers.classList.remove("hidden");
+                if(deviceWidth < 768){
+                    sideBar.classList.add("hidden");
+                    sideBar.classList.remove("flex");
+                }else{
+                    ghostMessageContainers.classList.remove("md:flex");
+                    ghostMessageContainers.classList.add("md:hidden");
+                }
             }
         })
     })
