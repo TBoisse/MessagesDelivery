@@ -11,6 +11,7 @@ services:
       - internal_network
     environment:
       POSTGRES_URL: "postgresql://$POSTGRES_USER:$POSTGRES_USER@postgres:5432/$POSTGRES_USER"
+      MESSAGE_KEY: $MESSAGE_KEY
 
   auth-server:
     image: auth-server:latest

@@ -37,7 +37,7 @@
                     <p>Chat Name</p>
                 </div>
             </div>
-            <img class="h-7 cursor-pointer" src="/static/image/mask/white-dots.svg" alt="chat settings">
+            <img id="chat-settings" class="h-7 cursor-pointer" src="/static/image/mask/white-dots.svg" alt="chat settings">
         </div>
         <div class="flex flex-col flex-1 overflow-y-auto" id="messages-chat">
             <div class="flex items-center justify-center">Start of chat</div>
@@ -55,10 +55,23 @@
             </div>
         </div>
     </div>
+    <!-- POP UPS -->
+    <div id="popup" class="hidden items-center justify-center absolute w-full h-full bg-[#0003]">
+        <div class="relative flex flex-col gap-3 bg-guideline-6 rounded-lg px-10 py-5">
+            <img id="popup-close-button" class="absolute cursor-pointer top-[10px] right-[10px] w-5" src="/static/image/mask/red-close.svg" alt="close button">
+            <p class="text-white font-bold text-lg">Réglages de la conversation</p>
+            <div class="flex gap-10 bg-red-400 px-5 py-3 rounded-sm">
+                <p class="text-white">Supprimer la conversation ?</p>
+                <img id="btn-chat-delete" class="w-5 cursor-pointer" src="/static/image/mask/white-delete.svg" alt="delete button">
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
 {% block extra_scripts %}
-<script src="/static/js/onload.js"></script>
+<script src="/static/js/utils.js"></script>
 <script src="/static/js/messages.js"></script>
+<script src="/static/js/onload.js"></script>
+<script src="/static/js/popup.js"></script>
 <script src="/static/js/index.js"></script>
 {% endblock %}

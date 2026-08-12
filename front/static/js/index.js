@@ -1,9 +1,6 @@
 const messagesChat = document.getElementById("messages-chat");
 const btnAdd = document.getElementById("btn-add");
 const btnSettings = document.getElementById("btn-settings");
-const chatContainers = document.querySelector(".chat-containers");
-
-let chatList = [];
 
 // const chat = new Chat();
 
@@ -47,47 +44,8 @@ function initChat(initialMessages){
     messagesChat.scrollTop = messagesChat.scrollHeight;
 }
 
-async function updateChatList(){
-    const match = window.location.pathname.match(/^\/u\/(\d+)(?:\/|$)/);
-    if (!match) {
-    throw new Error("User index introuvable");
-    }
-    const userIndex = match[1];
-    const response = await fetch("/message/chat", {
-        method: "GET",
-        headers: {
-            "X-User-Index": userIndex
-        },
-        credentials: "same-origin"
-    });
-    if(! response.ok){
-        alert(response.body);
-        return;
-    }
-    chatList = await response.json();
-    chatContainers.innerHTML = "";
-    chatList.forEach(chat => {
-        const chatDiv = document.createElement("div");
-        chatDiv.innerHTML = `
-            <div>
-                <div>
-                    <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
-                    <p>${chat.chat_name}</p>
-                </div>
-                <div>0</div>
-            </div>
-        `;
-        chatContainers.appendChild(chatDiv);
-    });
-    buildChatsClick();
-}
-
 btnAdd.addEventListener("click", async () => {
-    const match = window.location.pathname.match(/^\/u\/(\d+)(?:\/|$)/);
-    if (!match) {
-    throw new Error("User index introuvable");
-    }
-    const userIndex = match[1];
+    const userIndex = getUserIndex();
     const payload = {
         "chat_name" : "Wow !",
         "description" : "Test ?"

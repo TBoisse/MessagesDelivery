@@ -43,3 +43,12 @@ def save_to_db(db: Session, obj):
     except Exception as e:
         db.rollback()
         return f"Unknown error : {e}", 403
+
+def delete_in_db(db: Session, obj):
+    try:
+        db.delete(obj)
+        db.commit()
+        return "", 200
+    except Exception as e:
+        db.rollback()
+        return f"Unknown error : {e}", 403
