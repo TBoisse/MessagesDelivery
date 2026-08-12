@@ -25,63 +25,19 @@
                 <div>Favoris</div>
             </div>
         </div>
-        <div class="flex flex-col flex-1 bg-guideline-1 chat-containers">
-            <!-- WHEN DONE, CAN REMOVE EVERYTHING FROM HERE -->
-            <div>
-                <div class="active">
-                    <div>
-                        <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
-                        <p>Chat Name</p>
-                    </div>
-                    <div class="unseen">1</div>
-                </div>
-            </div>
-            <div>
-                <div>
-                    <div>
-                        <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
-                        <p>Chat Name</p>
-                    </div>
-                    <div>0</div>
-                </div>
-            </div>
-            <div>
-                <div>
-                    <div>
-                        <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
-                        <p>Chat Name</p>
-                    </div>
-                    <div>0</div>
-                </div>
-            </div>
-            <div>
-                <div>
-                    <div>
-                        <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
-                        <p>Chat Name</p>
-                    </div>
-                    <div>0</div>
-                </div>
-            </div>
-            <div>
-                <div>
-                    <div>
-                        <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
-                        <p>Chat Name</p>
-                    </div>
-                    <div>0</div>
-                </div>
-            </div>
-            <!-- UP TO HERE -->
+        <div class="flex flex-col flex-1 bg-guideline-1 chat-containers overflow-y-auto">
         </div>
     </div>
     <div class="hidden md:flex flex-col h-full w-full md:w-3/5 messages-container">
-        <div class="flex items-center gap-5 px-10 py-5 w-full bg-guideline-6">
-            <img class="w-7 md:w-0 block md:hidden" src="/static/image/mask/white-back.svg" alt="back button">
-            <div class="flex gap-3 text-white font-bold">
-                <img class="w-7" src="/static/image/letters/letter-a.svg" alt="chat icon">
-                <p>Chat Name</p>
+        <div class="flex justify-between items-center px-10 py-5 w-full bg-guideline-6">
+            <div class="flex gap-5">
+                <img class="w-7 md:w-0 block md:hidden" src="/static/image/mask/white-back.svg" alt="back button">
+                <div class="flex gap-3 text-white font-bold">
+                    <img class="w-7" src="/static/image/letters/letter-a.svg" alt="chat icon">
+                    <p>Chat Name</p>
+                </div>
             </div>
+            <img class="h-7 cursor-pointer" src="/static/image/mask/white-dots.svg" alt="chat settings">
         </div>
         <div class="flex flex-col flex-1 overflow-y-auto" id="messages-chat">
             <div class="flex items-center justify-center">Start of chat</div>

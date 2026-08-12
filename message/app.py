@@ -15,6 +15,29 @@ security = HTTPBearer()
 
 COOKIE_NAME = "access_token"
 
+@app.get("/chat")
+def get_chat(request : Request, db : Session = Depends(get_db)):
+    try:
+        user_id = int(request.headers.get("X-User-Id"))
+    except Exception:
+        raise HTTPException(status_code=403)
+
+    chats = db.scalars(
+        select(Chat)
+        .join(ChatMember, ChatMember.chat_id == Chat.chat_id)
+        .where(ChatMember.user_id == user_id)
+    ).all()
+
+    return [
+        {
+            "chat_name": chat.chat_name,
+            "description": chat.description,
+            "icon": chat.icon,
+        }
+        for chat in chats
+    ]
+
+
 @app.post("/chat")
 def create_chat(request : Request, create_request: CreateChatRequest, db: Session = Depends(get_db)):
     try:

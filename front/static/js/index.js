@@ -1,41 +1,11 @@
 const messagesChat = document.getElementById("messages-chat");
 const btnAdd = document.getElementById("btn-add");
 const btnSettings = document.getElementById("btn-settings");
-const user = "Jack";
-const messages = [
-    {
-        "user" : "Max",
-        "content" : "Hi ! How are you all ?",
-        "hour" : "16:08"
-    },
-    {
-        "user" : "Max",
-        "content" : "When will you be available ?",
-        "hour" : "16:09"
-    },
-    {
-        "user" : "Eve",
-        "content" : "Oh Max it's been a long time ! I am in town for two days next week.",
-        "hour" : "16:10"
-    },
-    {
-        "user" : "Jack",
-        "content" : "No way ! We will all be at the same place at the same time.",
-        "hour" : "16:13"
-    },
-    {
-        "user" : "Jack",
-        "content" : "So coool!",
-        "hour" : "16:13"
-    },
-    {
-        "user" : "Max",
-        "content" : "Eager to do it.",
-        "hour" : "16:14"
-    },
-]
+const chatContainers = document.querySelector(".chat-containers");
 
-const chat = new Chat();
+let chatList = [];
+
+// const chat = new Chat();
 
 function initChat(initialMessages){
     let lastBlock = null;
@@ -77,8 +47,39 @@ function initChat(initialMessages){
     messagesChat.scrollTop = messagesChat.scrollHeight;
 }
 
-function updateChat(){
-
+async function updateChatList(){
+    const match = window.location.pathname.match(/^\/u\/(\d+)(?:\/|$)/);
+    if (!match) {
+    throw new Error("User index introuvable");
+    }
+    const userIndex = match[1];
+    const response = await fetch("/message/chat", {
+        method: "GET",
+        headers: {
+            "X-User-Index": userIndex
+        },
+        credentials: "same-origin"
+    });
+    if(! response.ok){
+        alert(response.body);
+        return;
+    }
+    chatList = await response.json();
+    chatContainers.innerHTML = "";
+    chatList.forEach(chat => {
+        const chatDiv = document.createElement("div");
+        chatDiv.innerHTML = `
+            <div>
+                <div>
+                    <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
+                    <p>${chat.chat_name}</p>
+                </div>
+                <div>0</div>
+            </div>
+        `;
+        chatContainers.appendChild(chatDiv);
+    });
+    buildChatsClick();
 }
 
 btnAdd.addEventListener("click", async () => {
@@ -102,7 +103,7 @@ btnAdd.addEventListener("click", async () => {
     });
 
     if (response.ok) {
-        const result = await response.json();
+        await updateChatList();
         return;
     }
 
@@ -110,4 +111,4 @@ btnAdd.addEventListener("click", async () => {
 
 });
 
-initChat(messages);
+updateChatList();
