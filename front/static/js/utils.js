@@ -1,3 +1,5 @@
+let deviceWidth = window.innerWidth;
+
 function getUserIndex(){
     const match = window.location.pathname.match(/^\/u\/(\d+)(?:\/|$)/);
     if (!match) {
@@ -5,3 +7,7 @@ function getUserIndex(){
     }
     return match[1];
 }
+
+window.addEventListener("resize", () => {
+    deviceWidth = window.innerWidth;
+});

@@ -4,7 +4,7 @@ const btnSettings = document.getElementById("btn-settings");
 
 // const chat = new Chat();
 
-function initChat(initialMessages){
+function initChat(initialMessages, user){
     let lastBlock = null;
     messages.forEach(message => {
         const createNewBlock = chat.appendSpread(message.user, message.content, message.hour);
@@ -70,3 +70,4 @@ btnAdd.addEventListener("click", async () => {
 });
 
 updateChatList();
+buildPillsClick();

@@ -1,6 +1,10 @@
+const sideBar = document.getElementById("side-bar");
 const messagePlaceholder = document.getElementById("message-placeholder");
 const messageContent = document.getElementById("message-content");
 const chatContainers = document.querySelector(".chat-containers");
+const messageContainers = document.querySelector(".messages-container");
+const ghostMessageContainers = document.querySelector(".messages-container-ghost");
+const backButton = document.getElementById("back-button");
 
 let chatList = [];
 let currentChatId = "";
@@ -34,6 +38,15 @@ function buildChatsClick(){
             });
             e.target.classList.add("active");
             currentChatId = chat.dataset.chatId;
+            messageContainers.classList.add("flex");
+            messageContainers.classList.remove("hidden");
+            if(deviceWidth < 768){
+                sideBar.classList.add("hidden");
+                sideBar.classList.remove("flex");
+            }else{
+                ghostMessageContainers.classList.remove("md:flex");
+                ghostMessageContainers.classList.add("md:hidden");
+            }
         })
     })
 }
@@ -69,3 +82,10 @@ async function updateChatList(){
     });
     buildChatsClick();
 }
+
+backButton.addEventListener("click", () => {
+    sideBar.classList.remove("hidden");
+    sideBar.classList.add("flex");
+    messageContainers.classList.remove("flex")
+    messageContainers.classList.add("hidden");
+})

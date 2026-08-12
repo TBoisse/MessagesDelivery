@@ -1,6 +1,7 @@
 const popUp = document.getElementById("popup");
 const popupCloseBtn = document.getElementById("popup-close-button");
 const btnChatDelete = document.getElementById("btn-chat-delete");
+const chatSettings = document.getElementById("chat-settings");
 
 function hidePopup(){
     popUp.classList.remove("flex");
@@ -12,7 +13,7 @@ function showPopup(){
     popUp.classList.remove("hidden");
 }
 
-document.getElementById("chat-settings").addEventListener("click", () => {
+chatSettings.addEventListener("click", () => {
     showPopup();
 })
 
@@ -44,6 +45,17 @@ btnChatDelete.addEventListener("click", async () => {
     });
 
     if (response.ok) {
+        if(deviceWidth < 768){
+            sideBar.classList.remove("hidden");
+            sideBar.classList.add("flex");
+            messageContainers.classList.remove("flex")
+            messageContainers.classList.add("hidden");
+        }else{
+            messageContainers.classList.remove("flex")
+            messageContainers.classList.add("hidden");
+            ghostMessageContainers.classList.remove("md:hidden");
+            ghostMessageContainers.classList.add("md:flex");
+        }
         await updateChatList();
         hidePopup();
         currentChatId = "";
