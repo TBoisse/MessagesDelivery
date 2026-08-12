@@ -1,5 +1,5 @@
 const popUp = document.getElementById("popup");
-const popupCloseBtn = document.getElementById("popup-close-button");
+const popupCloseBtns = document.querySelectorAll(".popup-close-button");
 const btnChatDelete = document.getElementById("btn-chat-delete");
 const chatSettings = document.getElementById("chat-settings");
 
@@ -13,8 +13,19 @@ function showPopup(){
     popUp.classList.remove("hidden");
 }
 
+function showPopupType(type){
+    document.getElementById(type).classList.add("flex");
+    document.getElementById(type).classList.remove("hidden");
+}
+
+function hidePopupType(type){
+    document.getElementById(type).classList.remove("flex");
+    document.getElementById(type).classList.add("hidden");
+}
+
 chatSettings.addEventListener("click", () => {
     showPopup();
+    showPopupType("popup-settings-chat");
 })
 
 
@@ -23,15 +34,20 @@ popUp.addEventListener("click", e => {
         return;
     }
     hidePopup();
+    Array.from(popUp.children).forEach(child => {
+        hidePopupType(child.id);
+    });
 })
 
-popupCloseBtn.addEventListener("click", () => {
-    hidePopup();
+popupCloseBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+        hidePopup();
+        hidePopupType(btn.parentElement.id);
+    })
 })
 
 btnChatDelete.addEventListener("click", async () => {
     const userIndex = getUserIndex();
-    console.log(currentChatId);
     const response = await fetch("/message/chat", {
         method: "DELETE",
         headers: {

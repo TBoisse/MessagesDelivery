@@ -46,6 +46,7 @@ function buildChatsClick(){
                     ghostMessageContainers.classList.remove("md:hidden");
                 }
             }else{
+                document.getElementById("chat-window-title").innerText = e.target.querySelector(".chat-title").innerText;
                 chats.forEach(chat => {
                     chat.querySelector("div").classList.remove("active");
                 });
@@ -87,7 +88,7 @@ async function updateChatList(){
             <div>
                 <div>
                     <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
-                    <p>${chat.chat_name}</p>
+                    <p class="chat-title">${chat.chat_name}</p>
                 </div>
                 <div>0</div>
             </div>

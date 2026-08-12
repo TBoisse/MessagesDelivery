@@ -1,5 +1,6 @@
 const messagesChat = document.getElementById("messages-chat");
 const btnAdd = document.getElementById("btn-add");
+const btnCreateChat = document.getElementById("btn-create-chat");
 const btnSettings = document.getElementById("btn-settings");
 
 // const chat = new Chat();
@@ -45,10 +46,15 @@ function initChat(initialMessages, user){
 }
 
 btnAdd.addEventListener("click", async () => {
+    showPopup();
+    showPopupType("popup-create-chat");
+});
+
+btnCreateChat.addEventListener("click", async () => {
     const userIndex = getUserIndex();
     const payload = {
-        "chat_name" : "Wow !",
-        "description" : "Test ?"
+        "chat_name" : document.getElementById("input-chat-name").value,
+        "description" : document.getElementById("input-chat-description").value
     }
     const response = await fetch("/message/chat", {
         method: "POST",
@@ -62,9 +68,11 @@ btnAdd.addEventListener("click", async () => {
 
     if (response.ok) {
         await updateChatList();
+        hidePopup();
+        hidePopupType("popup-create-chat");
         return;
     }
-
+    
     alert(response.body);
 
 });

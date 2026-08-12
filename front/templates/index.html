@@ -37,7 +37,7 @@
                 <img id="back-button" class="w-7 md:w-0 block md:hidden cursor-pointer" src="/static/image/mask/white-back.svg" alt="back button">
                 <div class="flex gap-3 text-white font-bold">
                     <img class="w-7" src="/static/image/letters/letter-a.svg" alt="chat icon">
-                    <p>Chat Name</p>
+                    <p id="chat-window-title">Chat Name</p>
                 </div>
             </div>
             <img id="chat-settings" class="h-5 cursor-pointer" src="/static/image/mask/white-dots.svg"
@@ -211,8 +211,9 @@
 
     <!-- POP UPS -->
     <div id="popup" class="hidden items-center justify-center absolute w-full h-full bg-[#0003] z-100">
-        <div class="relative flex flex-col gap-3 bg-guideline-6 rounded-lg px-10 py-5">
-            <img id="popup-close-button" class="absolute cursor-pointer top-[10px] right-[10px] w-5"
+        <!-- delete chat -->
+        <div id="popup-settings-chat" class="relative hidden flex-col gap-3 bg-guideline-6 rounded-lg px-10 py-5">
+            <img class="absolute cursor-pointer top-[10px] right-[10px] w-5 popup-close-button"
                 src="/static/image/mask/red-close.svg" alt="close button">
             <p class="text-white font-bold text-lg">Réglages de la conversation</p>
             <div class="flex gap-10 bg-red-400 px-5 py-3 rounded-sm">
@@ -220,6 +221,21 @@
                 <img id="btn-chat-delete" class="w-5 cursor-pointer" src="/static/image/mask/white-delete.svg"
                     alt="delete button">
             </div>
+        </div>
+        <!-- create chat -->
+        <div id="popup-create-chat" class="relative hidden flex-col items-center justify-center gap-3 bg-guideline-6 rounded-lg px-10 py-5">
+            <img class="absolute cursor-pointer top-[10px] right-[10px] w-5 popup-close-button"
+                src="/static/image/mask/red-close.svg" alt="close button">
+            <p class="text-white font-bold text-lg">Créer un nouveau chat</p>
+            <div class="flex gap-10 px-5 py-3 rounded-sm">
+                <p class="text-white">Nom du chat</p>
+                <input type="text" name="chat-name" id="input-chat-name">
+            </div>
+            <div class="flex gap-10 px-5 py-3 rounded-sm">
+                <p class="text-white">Description</p>
+                <input type="text" name="chat-description" id="input-chat-description">
+            </div>
+            <div id="btn-create-chat" class="bg-green-900 text-white font-bold px-5 py-3 rounded-lg cursor-pointer">Créer le chat</div>
         </div>
     </div>
 </div>
