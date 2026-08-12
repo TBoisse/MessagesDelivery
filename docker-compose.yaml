@@ -1,5 +1,17 @@
 services:
 
+  message-server:
+    image: message-server:latest
+    build:
+      context: message
+      dockerfile: Dockerfile
+    expose:
+      - 3002
+    networks:
+      - internal_network
+    environment:
+      POSTGRES_URL: "postgresql://$POSTGRES_USER:$POSTGRES_USER@postgres:5432/$POSTGRES_USER"
+
   auth-server:
     image: auth-server:latest
     build:

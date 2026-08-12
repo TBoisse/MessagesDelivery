@@ -1,4 +1,6 @@
 const messagesChat = document.getElementById("messages-chat");
+const btnAdd = document.getElementById("btn-add");
+const btnSettings = document.getElementById("btn-settings");
 const user = "Jack";
 const messages = [
     {
@@ -78,5 +80,34 @@ function initChat(initialMessages){
 function updateChat(){
 
 }
+
+btnAdd.addEventListener("click", async () => {
+    const match = window.location.pathname.match(/^\/u\/(\d+)(?:\/|$)/);
+    if (!match) {
+    throw new Error("User index introuvable");
+    }
+    const userIndex = match[1];
+    const payload = {
+        "chat_name" : "Wow !",
+        "description" : "Test ?"
+    }
+    const response = await fetch("/message/chat", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-User-Index": userIndex
+        },
+        credentials: "same-origin",
+        body: JSON.stringify(payload)
+    });
+
+    if (response.ok) {
+        const result = await response.json();
+        return;
+    }
+
+    alert(response.body);
+
+});
 
 initChat(messages);
