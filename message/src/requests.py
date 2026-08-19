@@ -11,3 +11,7 @@ class DeleteChatRequest(BaseModel):
 class CreateMessageRequest(BaseModel):
     chat_id : str
     content : str
+    
+class AddChatMemberRequest(BaseModel):
+    chat_id : str
+    contact_phone : str

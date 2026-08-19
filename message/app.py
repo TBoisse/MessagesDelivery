@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 from hashids import Hashids
 # intern imports
 from src.requests import CreateChatRequest, DeleteChatRequest, CreateMessageRequest
+from src.requests import AddChatMemberRequest
 from src.tables import User, Chat, ChatMember, Message
 from src.database import get_db, save_to_db, delete_in_db
 
@@ -105,6 +106,15 @@ def delete_chat(request : Request, delete_request: DeleteChatRequest, db: Sessio
         db.rollback()
         raise HTTPException(status_code=500)
 
+    try:
+        db.execute(
+            delete(Message).where(Message.conversation_id == chat_id)
+        )
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500)
+
     message, code = delete_in_db(db, chat)
     if code != 200:
         raise HTTPException(
@@ -112,7 +122,41 @@ def delete_chat(request : Request, delete_request: DeleteChatRequest, db: Sessio
             detail=message
         )
 
-    return {"message": f"Chat deleted"}, 200
+    return {"message": "Chat deleted"}, 200
+
+@app.post("/chat/members")
+def update_chat(request : Request, add_member_request: AddChatMemberRequest, db: Session = Depends(get_db)):
+    try:
+        user_id = int(request.headers.get("X-User-Id"))
+    except Exception:
+        raise HTTPException(status_code=401)
+
+    chat_id = hashids.decode(add_member_request.chat_id)
+    if not chat_id:
+        raise HTTPException(status_code=404)
+
+    chat = db.scalar(select(Chat).where(Chat.chat_id == chat_id[0]))
+    if not chat or chat.creator_id != user_id:
+        raise HTTPException(status_code=403)
+
+    contact = db.scalar(select(User).where(User.phone_number == add_member_request.contact_phone))
+    if not contact:
+        raise HTTPException(status_code=404)
+
+    chat_member = ChatMember(
+        chat_id=chat_id,
+        user_id=contact.user_id
+    )
+    message, code = save_to_db(db, chat_member)
+    if code != 200:
+        raise HTTPException(
+            status_code=code,
+            detail=message
+        )
+    return {"message": "Member added"}, 200
+
+    
+
 
 @app.get("/message/{encoded_chat_id}")
 def get_messages(request : Request, encoded_chat_id: str, db: Session = Depends(get_db)):

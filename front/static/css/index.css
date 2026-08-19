@@ -92,3 +92,10 @@
     left: 0;
     color: #ddd;
 }
+
+#add-member{
+    outline: none;
+    border-bottom: 1px solid white;
+    color: white;
+    background: transparent;
+}

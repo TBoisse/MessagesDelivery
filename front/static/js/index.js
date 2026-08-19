@@ -2,6 +2,7 @@ const btnAdd = document.getElementById("btn-add");
 const btnCreateChat = document.getElementById("btn-create-chat");
 const btnSettings = document.getElementById("btn-settings");
 const btnMessageSend = document.getElementById("btn-message-send");
+const btnAddMember = document.getElementById("btn-add-member");
 
 btnAdd.addEventListener("click", async () => {
     showPopup();
@@ -62,6 +63,23 @@ btnMessageSend.addEventListener("click", async () => {
     }
 
 });
+
+btnAddMember.addEventListener("click", async () => {
+    const contactPhone = document.getElementById("add-member").value;
+    const userIndex = getUserIndex();
+    const response = await fetch("/message/chat/members", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-User-Index": userIndex
+        },
+        credentials: "same-origin",
+        body: JSON.stringify({
+            chat_id : currentChatId,
+            contact_phone : contactPhone
+        })
+    });
+})
 
 buildChatList();
 buildPillsClick();
