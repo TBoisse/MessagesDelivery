@@ -10,13 +10,15 @@
 
 {% block extra_content %}
 <div class="flex h-screen">
-    <div class="flex flex-col w-full md:w-2/5 h-full">
+    <div class="flex flex-col w-full md:w-2/5 h-full" id="side-bar">
         <div class="flex flex-col gap-4 py-4 bg-guideline-3">
             <div class="flex justify-between items-center px-5 py-2">
                 <p class="font-black text-2xl text-white">MessagesDelivery</p>
                 <div class="flex gap-4">
-                    <img class="w-6 cursor-pointer" src="/static/image/mask/white-add.svg" alt="add message">
-                    <img class="w-6 cursor-pointer" src="/static/image/mask/white-settings.svg" alt="settings">
+                    <img class="w-6 cursor-pointer" id="btn-add" src="/static/image/mask/white-add.svg"
+                        alt="add message">
+                    <img class="w-6 cursor-pointer" id="btn-settings" src="/static/image/mask/white-settings.svg"
+                        alt="settings">
                 </div>
             </div>
             <div class="flex gap-3 px-5 py-2 pill-containers">
@@ -25,66 +27,24 @@
                 <div>Favoris</div>
             </div>
         </div>
-        <div class="flex flex-col flex-1 bg-guideline-1 chat-containers">
-            <!-- WHEN DONE, CAN REMOVE EVERYTHING FROM HERE -->
-            <div>
-                <div class="active">
-                    <div>
-                        <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
-                        <p>Chat Name</p>
-                    </div>
-                    <div class="unseen">1</div>
-                </div>
-            </div>
-            <div>
-                <div>
-                    <div>
-                        <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
-                        <p>Chat Name</p>
-                    </div>
-                    <div>0</div>
-                </div>
-            </div>
-            <div>
-                <div>
-                    <div>
-                        <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
-                        <p>Chat Name</p>
-                    </div>
-                    <div>0</div>
-                </div>
-            </div>
-            <div>
-                <div>
-                    <div>
-                        <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
-                        <p>Chat Name</p>
-                    </div>
-                    <div>0</div>
-                </div>
-            </div>
-            <div>
-                <div>
-                    <div>
-                        <img class="w-10" src="/static/image/letters/letter-a.svg" alt="chat icon">
-                        <p>Chat Name</p>
-                    </div>
-                    <div>0</div>
-                </div>
-            </div>
-            <!-- UP TO HERE -->
+        <div class="flex flex-col flex-1 bg-guideline-1 chat-containers overflow-y-auto">
         </div>
     </div>
-    <div class="hidden md:flex flex-col h-full w-full md:w-3/5 messages-container">
-        <div class="flex items-center gap-5 px-10 py-5 w-full bg-guideline-6">
-            <img class="w-7 md:w-0 block md:hidden" src="/static/image/mask/white-back.svg" alt="back button">
-            <div class="flex gap-3 text-white font-bold">
-                <img class="w-7" src="/static/image/letters/letter-a.svg" alt="chat icon">
-                <p>Chat Name</p>
+
+    <div class="hidden flex-col h-full w-full md:w-3/5 messages-container">
+        <div class="flex justify-between items-center px-10 py-5 w-full bg-guideline-6">
+            <div class="flex gap-5">
+                <img id="back-button" class="w-7 md:w-0 block md:hidden cursor-pointer" src="/static/image/mask/white-back.svg" alt="back button">
+                <div class="flex gap-3 text-white font-bold">
+                    <img class="w-7" src="/static/image/letters/letter-a.svg" alt="chat icon">
+                    <p id="chat-window-title">Chat Name</p>
+                </div>
             </div>
+            <img id="chat-settings" class="h-5 cursor-pointer" src="/static/image/mask/white-dots.svg"
+                alt="chat settings">
         </div>
         <div class="flex flex-col flex-1 overflow-y-auto" id="messages-chat">
-            <div class="flex items-center justify-center">Start of chat</div>
+            <div class="flex items-center justify-center  my-3">Start of chat</div>
         </div>
         <div class="w-full px-10 py-3 pt-0">
             <div class="flex items-center w-full rounded-lg gap-5 p-3">
@@ -95,14 +55,196 @@
                         Entrez votre message
                     </div>
                 </div>
-                <img class="w-8 cursor-pointer self-end" src="/static/image/mask/green-send.svg" alt="">
+                <img id="btn-message-send" class="w-8 cursor-pointer self-end" src="/static/image/mask/green-send.svg" alt="">
             </div>
+        </div>
+    </div>
+    <div class="hidden md:flex flex-col h-full w-full md:w-3/5 messages-container-ghost">
+        <div class="flex items-center px-10 py-5 w-full bg-guideline-6">
+            <div class="flex gap-5">
+                <div class="flex gap-3 text-white font-bold">
+                    <div class="w-7 h-7 bg-gray-300 rounded-full"></div>
+                    <p class="bg-gray-300 text-gray-300 rounded-sm">Chat Name</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col flex-1 overflow-y-auto">
+            <div class="flex items-center justify-center w-full">
+                <p class="bg-gray-300 rounded-sm my-3 w-[100px] h-[20px]"></p>
+            </div>
+            <div class="relative">
+                <div class="absolute h-full left-3 top-2">
+                    <div class="w-5 h-5 bg-gray-300 rounded-full"></div>
+                </div>
+                <div class="pb-0.5">
+                    <div class="flex justify-start px-10">
+                        <div class="relative bg-gray-300 max-w-[90%] sm:max-w-[80%] lg:max-w-[70%] rounded-lg">
+                            <div class="flex flex-col items-center p-2">
+                                <div class="w-full text-start font-bold text-gray-300">
+                                    Alex
+                                </div>
+                                <div class="w-full text-start text-gray-300">
+                                    kllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll
+                                </div>
+                                <div class="w-full text-end text-black text-gray-300">
+                                    xx:xx
+                                </div>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pb-0.5 pb-[10px]">
+                    <div class="flex justify-start px-10">
+                        <div class="relative bg-gray-300 max-w-[90%] sm:max-w-[80%] lg:max-w-[70%] rounded-lg">
+                            <div class="flex flex-col items-center p-2">
+
+                                <div class="w-full text-start text-gray-300">
+                                    klllllllllllll
+                                </div>
+                                <div class="w-full text-end text-gray-300 text-xs">
+                                    xx:xx
+                                </div>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="absolute h-full right-3 top-2">
+                    <div class="w-5 h-5 bg-gray-500 rounded-full"></div>
+                </div>
+                <div class="pb-0.5 pb-[10px]">
+                    <div class="flex justify-end px-10">
+                        <div class="relative bg-gray-500 max-w-[90%] sm:max-w-[80%] lg:max-w-[70%] rounded-lg">
+                            <div class="flex flex-col items-center p-2">
+                                <div class="w-full text-start font-bold text-gray-500">
+                                    Marc
+                                </div>
+                                <div class="w-full text-start text-gray-500 break-words">
+                                    klllllllllllllllllllllllllllllaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                                </div>
+                                <div class="w-full text-end text-gray-500 text-xs">
+                                    xx:xx
+                                </div>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="absolute h-full left-3 top-2">
+                    <div class="w-5 h-5 bg-gray-300 rounded-full"></div>
+                </div>
+                <div class="pb-0.5">
+                    <div class="flex justify-start px-10">
+                        <div class="relative bg-gray-300 max-w-[90%] sm:max-w-[80%] lg:max-w-[70%] rounded-lg">
+                            <div class="flex flex-col items-center p-2">
+                                <div class="w-full text-start font-bold text-gray-300">
+                                    Alex
+                                </div>
+                                <div class="w-full text-start text-gray-300">
+                                    kllllllllllllllll
+                                </div>
+                                <div class="w-full text-end text-gray-300 text-xs">
+                                    xx:xx
+                                </div>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pb-0.5 pb-[10px]">
+                    <div class="flex justify-start px-10">
+                        <div class="relative bg-gray-300 max-w-[90%] sm:max-w-[80%] lg:max-w-[70%] rounded-lg">
+                            <div class="flex flex-col items-center p-2">
+
+                                <div class="w-full text-start text-gray-300">
+                                    kllllllllllllllllllllllll
+                                </div>
+                                <div class="w-full text-end text-gray-300 text-xs">
+                                    xx:xx
+                                </div>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="absolute h-full right-3 top-2">
+                    <div class="w-5 h-5 bg-gray-500 rounded-full"></div>
+                </div>
+                <div class="pb-0.5 pb-[10px]">
+                    <div class="flex justify-end px-10">
+                        <div class="relative bg-gray-500 max-w-[90%] sm:max-w-[80%] lg:max-w-[70%] rounded-lg">
+                            <div class="flex flex-col items-center p-2">
+                                <div class="w-full text-start font-bold text-gray-500">
+                                    Marc
+                                </div>
+                                <div class="w-full text-start text-gray-500">
+                                    klllllllllllllllllllllllllllllllllllllllll
+                                </div>
+                                <div class="w-full text-end text-gray-500 text-xs">
+                                    xx:xx
+                                </div>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="w-full px-10 py-3 pt-0">
+            <div class="flex items-center w-full rounded-lg gap-5 p-3 bg-gray-300">
+            </div>
+        </div>
+    </div>
+
+    <!-- POP UPS -->
+    <div id="popup" class="hidden items-center justify-center absolute w-full h-full bg-[#0003] z-100">
+        <!-- delete chat -->
+        <div id="popup-settings-chat" class="relative hidden flex-col gap-3 bg-guideline-6 rounded-lg px-10 py-5">
+            <img class="absolute cursor-pointer top-[10px] right-[10px] w-5 popup-close-button"
+                src="/static/image/mask/red-close.svg" alt="close button">
+            <p class="text-white font-bold text-lg">Réglages de la conversation</p>
+            <div class="flex gap-10 bg-red-400 px-5 py-3 rounded-sm">
+                <p class="text-white">Supprimer la conversation ?</p>
+                <img id="btn-chat-delete" class="w-5 cursor-pointer" src="/static/image/mask/white-delete.svg"
+                    alt="delete button">
+            </div>
+        </div>
+        <!-- create chat -->
+        <div id="popup-create-chat" class="relative hidden flex-col items-center justify-center gap-3 bg-guideline-6 rounded-lg px-10 py-5">
+            <img class="absolute cursor-pointer top-[10px] right-[10px] w-5 popup-close-button"
+                src="/static/image/mask/red-close.svg" alt="close button">
+            <p class="text-white font-bold text-lg">Créer un nouveau chat</p>
+            <div class="flex gap-10 px-5 py-3 rounded-sm">
+                <p class="text-white">Nom du chat</p>
+                <input type="text" name="chat-name" id="input-chat-name">
+            </div>
+            <div class="flex gap-10 px-5 py-3 rounded-sm">
+                <p class="text-white">Description</p>
+                <input type="text" name="chat-description" id="input-chat-description">
+            </div>
+            <div id="btn-create-chat" class="bg-green-900 text-white font-bold px-5 py-3 rounded-lg cursor-pointer">Créer le chat</div>
         </div>
     </div>
 </div>
 {% endblock %}
 {% block extra_scripts %}
-<script src="/static/js/onload.js"></script>
+<script src="/static/js/utils.js"></script>
 <script src="/static/js/messages.js"></script>
+<script src="/static/js/chats.js"></script>
+<script src="/static/js/onload.js"></script>
+<script src="/static/js/popup.js"></script>
 <script src="/static/js/index.js"></script>
 {% endblock %}
