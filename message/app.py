@@ -114,16 +114,17 @@ def delete_chat(request : Request, delete_request: DeleteChatRequest, db: Sessio
 
     return {"message": f"Chat deleted"}, 200
 
-@app.post("/message/{chat_id}")
-def create_message(request : Request, chat_id: str, db: Session = Depends(get_db)):
+@app.get("/message/{encoded_chat_id}")
+def get_messages(request : Request, encoded_chat_id: str, db: Session = Depends(get_db)):
     try:
         user_id = int(request.headers.get("X-User-Id"))
     except Exception:
         raise HTTPException(status_code=401)
-    decoded_chat_id = hashids.decode(chat_id)
+    decoded_chat_id = hashids.decode(encoded_chat_id)
     if not decoded_chat_id:
         raise HTTPException(status_code=404)
-    chat = db.scalar(select(Chat).where(Chat.chat_id == decoded_chat_id[0]))
+    chat_id = decoded_chat_id[0]
+    chat = db.scalar(select(Chat).where(Chat.chat_id == chat_id))
     if not chat:
         raise HTTPException(status_code=403)
 
@@ -139,7 +140,7 @@ def create_message(request : Request, chat_id: str, db: Session = Depends(get_db
 
     messages = db.scalars(
         select(Message)
-        .where(Message.conversation_id == decoded_chat_id[0])
+        .where(Message.conversation_id == chat_id)
         .order_by(Message.created_at)
     ).all()
 
@@ -147,7 +148,7 @@ def create_message(request : Request, chat_id: str, db: Session = Depends(get_db
         {
             "user": members_corresp[message.sender_id],
             "content": message.content,
-            "hour": message.created_at,
+            "hour": f"{message.created_at.hour}:{message.created_at.minute}",
             "is_user": message.sender_id == user_id,
         }
         for message in messages

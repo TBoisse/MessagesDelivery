@@ -1,12 +1,8 @@
 const chatContainers = document.querySelector(".chat-containers");
-const sideBar = document.getElementById("side-bar");
-const messageContainers = document.querySelector(".messages-container");
-const ghostMessageContainers = document.querySelector(".messages-container-ghost");
-
+const messagesChat = document.getElementById("messages-chat");
 let chatList = [];
-let currentChatId = "";
 
-async function buildChatList(){
+async function buildChatList() {
     const userIndex = getUserIndex();
     const response = await fetch("/message/chat", {
         method: "GET",
@@ -15,7 +11,7 @@ async function buildChatList(){
         },
         credentials: "same-origin"
     });
-    if(!response.ok){
+    if (!response.ok) {
         alert(response.body);
         return;
     }
@@ -38,39 +34,70 @@ async function buildChatList(){
     chatsOnClickSet();
 }
 
-function chatsOnClickSet(){
-    const chats = document.querySelectorAll(".chat-containers > div");
-    chats.forEach(chat => {
-        chat.querySelector("div").addEventListener("click", e => {
-            if(e.target.classList.contains("active")){
-                e.target.classList.remove("active");
-                currentChatId = "";
-                messageContainers.classList.remove("flex");
-                messageContainers.classList.add("hidden");
-                if(deviceWidth < 768){
-                    sideBar.classList.remove("hidden");
-                    sideBar.classList.add("flex");
-                }else{
-                    ghostMessageContainers.classList.add("md:flex");
-                    ghostMessageContainers.classList.remove("md:hidden");
-                }
-            }else{
-                document.getElementById("chat-window-title").innerText = e.target.querySelector(".chat-title").innerText;
-                chats.forEach(chat => {
-                    chat.querySelector("div").classList.remove("active");
-                });
-                e.target.classList.add("active");
-                currentChatId = chat.dataset.chatId;
-                messageContainers.classList.add("flex");
-                messageContainers.classList.remove("hidden");
-                if(deviceWidth < 768){
-                    sideBar.classList.add("hidden");
-                    sideBar.classList.remove("flex");
-                }else{
-                    ghostMessageContainers.classList.remove("md:flex");
-                    ghostMessageContainers.classList.add("md:hidden");
-                }
+function displayChat(messages) {
+    const chat = new Chat();
+    messagesChat.innerHTML = "";
+    let lastBlock = null;
+    messages.forEach(message => {
+        const createNewBlock = chat.appendSpread(message.user, message.content, message.hour);
+        if (createNewBlock) {
+            lastBlock = document.createElement("div");
+            lastBlock.innerHTML = `
+                <div class="absolute h-full ${(message.is_user) ? "right-3" : "left-3"} top-2">
+                    <img class="w-5" src="/static/image/letters/letter-a.svg" alt="user icon">
+                </div>
+            `;
+            messagesChat.appendChild(lastBlock);
+        }
+        const messageDiv = document.createElement("div");
+        messageDiv.className = "pb-0.5";
+        messageDiv.innerHTML = `
+            <div class="flex ${(message.is_user) ? "justify-end" : "justify-start"} px-10">
+                <div class="relative ${(message.is_user) ? "bg-guideline-4" : "bg-guideline-6"} max-w-[90%] sm:max-w-[80%] lg:max-w-[70%] rounded-lg">
+                    <div class="flex flex-col items-center p-2">
+                    ${(chat.isFirstMessageLastBlock() ? `<div class="w-full text-start font-bold text-white">
+                            ${message.user}
+                        </div>` : "")
             }
+                        <div class="w-full text-start text-white break-words">
+                            ${message.content}
+                        </div>
+                        <div class="w-full text-end text-white text-xs">
+                            ${message.hour}
+                        </div>
+                    </div>
+                <div>
+            </div>
+        `;
+        lastBlock.appendChild(messageDiv);
+    });
+    messagesChat.scrollTop = messagesChat.scrollHeight;
+}
+
+function chatsOnClickSet() {
+    chatsList = document.querySelectorAll(".chat-containers > div");
+    chatsList.forEach(chat => {
+        chat.querySelector("div").addEventListener("click", async e => {
+            if(e.target.classList.contains("active")) {  // needed to post messages
+                currentChatId = "";
+            } else {
+                currentChatId = chat.dataset.chatId;
+            }
+            handleScreenWidth(e.target);
+            const userIndex = getUserIndex();
+            const response = await fetch(`/message/message/${chat.dataset.chatId}`, {
+                method: "GET",
+                headers: {
+                    "X-User-Index": userIndex
+                },
+                credentials: "same-origin"
+            });
+            if (!response.ok) {
+                alert(response.body);
+                return;
+            }
+            messages = await response.json();
+            displayChat(messages);
         })
     })
 }

@@ -1,48 +1,7 @@
-const messagesChat = document.getElementById("messages-chat");
 const btnAdd = document.getElementById("btn-add");
 const btnCreateChat = document.getElementById("btn-create-chat");
 const btnSettings = document.getElementById("btn-settings");
 const btnMessageSend = document.getElementById("btn-message-send");
-
-function displayChat(messages){
-    const chat = new Chat();
-    let lastBlock = null;
-    messages.forEach(message => {
-        const createNewBlock = chat.appendSpread(message.user, message.content, message.hour);
-        if(createNewBlock){
-            lastBlock = document.createElement("div");
-            lastBlock.innerHTML = `
-                <div class="absolute h-full ${(message.is_user) ? "right-3" : "left-3"} top-2">
-                    <img class="w-5" src="/static/image/letters/letter-a.svg" alt="user icon">
-                </div>
-            `;
-            messagesChat.appendChild(lastBlock);
-        }
-        const messageDiv = document.createElement("div");
-        messageDiv.className = "pb-0.5";
-        messageDiv.innerHTML = `
-            <div class="flex ${(message.is_user) ? "justify-end" : "justify-start"} px-10">
-                <div class="relative ${(message.is_user) ? "bg-guideline-4" : "bg-guideline-6"} max-w-[90%] sm:max-w-[80%] lg:max-w-[70%] rounded-lg">
-                    <div class="flex flex-col items-center p-2">
-                    ${
-                        (chat.isFirstMessageLastBlock() ? `<div class="w-full text-start font-bold text-white">
-                            ${message.user}
-                        </div>` : "")
-                    }
-                        <div class="w-full text-start text-white">
-                            ${message.content}
-                        </div>
-                        <div class="w-full text-end text-white text-xs">
-                            ${message.hour}
-                        </div>
-                    </div>
-                <div>
-            </div>
-        `;
-        lastBlock.appendChild(messageDiv);
-    });
-    messagesChat.scrollTop = messagesChat.scrollHeight;
-}
 
 btnAdd.addEventListener("click", async () => {
     showPopup();
