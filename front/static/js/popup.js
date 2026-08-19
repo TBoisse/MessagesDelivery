@@ -72,7 +72,7 @@ btnChatDelete.addEventListener("click", async () => {
             ghostMessageContainers.classList.remove("md:hidden");
             ghostMessageContainers.classList.add("md:flex");
         }
-        await updateChatList();
+        await buildChatList();
         hidePopup();
         currentChatId = "";
         return;

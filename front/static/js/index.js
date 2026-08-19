@@ -66,7 +66,7 @@ btnCreateChat.addEventListener("click", async () => {
     });
 
     if (response.ok) {
-        await updateChatList();
+        await buildChatList();
         hidePopup();
         hidePopupType("popup-create-chat");
         document.getElementById("input-chat-name").value = "";
@@ -104,5 +104,5 @@ btnMessageSend.addEventListener("click", async () => {
 
 });
 
-updateChatList();
+buildChatList();
 buildPillsClick();
