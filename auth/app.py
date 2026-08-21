@@ -144,4 +144,9 @@ def verify_hard(request: Request, db: Session = Depends(get_db)):
     )
     if user is None:
         return Response(status_code=401)
-    return Response(status_code=200)
+    return Response(
+        status_code=200,
+        headers={
+            "X-User-Id": str(user.user_id),
+        }
+    )

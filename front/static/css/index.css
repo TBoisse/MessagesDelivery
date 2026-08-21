@@ -1,3 +1,7 @@
+#side-bar {
+    transition: width 0.2s;
+}
+
 .pill-containers > div{
     padding: 4px 8px;
     border-radius: 50px;
@@ -56,11 +60,11 @@
     background-color: var(--guideline-2);
 }
 
-.messages-container{
+.messages-container, .messages-container-ghost{
     background-color: #fff4f4;
 }
 
-.messages-container > div:nth-child(3) > div {
+.messages-container > div:nth-child(3) > div{
     background-color: var(--guideline-3);
 }
 
@@ -87,4 +91,11 @@
     top: 0;
     left: 0;
     color: #ddd;
+}
+
+#add-member{
+    outline: none;
+    border-bottom: 1px solid white;
+    color: white;
+    background: transparent;
 }
