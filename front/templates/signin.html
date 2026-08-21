@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}MD - Signin{% endblock %}
+
+{% block extra_styles %}
+<style>
+    @import url("/static/css/user.css");
+</style>
+{% endblock %}
+
+{% block extra_content %}
+<div class="flex justify-center items-center h-screen bg-guideline-5">
+    <div class="flex flex-col gap-10 justify-center items-center bg-guideline-4 rounded-lg px-10 sm:px-20 py-5 sm:py-10">
+        <h1 class="text-white font-bold text-2xl">Inscription</h1>
+        <form id="signin-form" class="flex flex-col gap-10" action="" method="post">
+            <div class="relative flex flex-col items-start">
+                <input class="form-input z-10" type="text" name="form-username" id="form-username" placeholder=" ">
+                <label class="absolute top-0 left-2 text-white" for="form-username">Entrez votre nom</label>
+            </div>
+            <div class="relative flex flex-col items-start">
+                <input class="form-input z-10" type="text" name="form-phone" id="form-phone" placeholder=" ">
+                <label class="absolute top-0 left-2 text-white" for="form-phone">Entrez votre téléphone</label>
+            </div>
+            <div class="relative flex flex-col items-start">
+                <input class="form-input z-10" type="email" name="form-email" id="form-email" placeholder=" ">
+                <label class="absolute top-0 left-2 text-white" for="form-email">Entrez votre email</label>
+            </div>
+            <div class="flex flex-col items-center gap-3">
+                <button class="px-10 py-5 bg-guideline-6 rounded-xl text-white font-semibold">S'inscrire</button>
+                <a href="/user/login">Se connecter</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="/static/js/signin.js"></script>
+{% endblock %}
