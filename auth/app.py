@@ -5,6 +5,8 @@ from fastapi import Depends, FastAPI, HTTPException, Response, Request
 from fastapi.security import HTTPBearer
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from werkzeug.security import generate_password_hash, check_password_hash
+import phonenumbers
 # intern imports
 from src.requests import LoginRequest, SigninRequest
 from src.tables import User
@@ -33,6 +35,11 @@ def login(
         select(User).where(User.phone_number == login_request.phone_number)
     )
     if user is None:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid credentials",
+        )
+    if not check_password_hash(user.password_hash, login_request.password):
         raise HTTPException(
             status_code=401,
             detail="Invalid credentials",
@@ -66,10 +73,31 @@ def signin(
     response: Response,
     db: Session = Depends(get_db)
     ):
+    if len(signin_request.password) < 8:
+        raise HTTPException(
+            status_code=401,
+            detail="Password length < 8 caracters",
+        )
+    try:
+        if signin_request.phone_number[0] == "+":
+            format_phone_number = phonenumbers.parse(signin_request.phone_number, None)
+        else:
+            format_phone_number = phonenumbers.parse(signin_request.phone_number, "FR")
+    except Exception:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid phone number",
+        )
+    if not phonenumbers.is_possible_number(format_phone_number):
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid phone number",
+        )
+
     user = User(
         username=signin_request.username,
         phone_number=signin_request.phone_number,
-        email=signin_request.email,
+        password_hash=generate_password_hash(signin_request.password),
     )
 
     message, code = save_to_db(db, user)

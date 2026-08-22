@@ -9,28 +9,36 @@
 {% endblock %}
 
 {% block extra_content %}
-<div class="flex justify-center items-center h-screen bg-guideline-5">
-    <div class="flex flex-col gap-10 justify-center items-center bg-guideline-4 rounded-lg px-10 sm:px-20 py-5 sm:py-10">
-        <h1 class="text-white font-bold text-2xl">Inscription</h1>
-        <form id="signin-form" class="flex flex-col gap-10" action="" method="post">
-            <div class="relative flex flex-col items-start">
-                <input class="form-input z-10" type="text" name="form-username" id="form-username" placeholder=" ">
-                <label class="absolute top-0 left-2 text-white" for="form-username">Entrez votre nom</label>
+<div class="min-h-screen bg-[#FFF4C7] text-[#2F4858] flex items-center justify-center p-4">
+    <main class="w-full max-w-md">
+        <form id="signin-form" class="bg-white rounded-2xl shadow-sm p-7 space-y-5">
+            <h1 class="text-3xl font-semibold text-center">Inscription</h1>
+            <div id="error-message"class="hidden rounded-lg border-2 border-red-400 bg-red-50 px-3 py-2 text-sm text-red-700"></div>
+            <div class="space-y-1">
+                <label for="form-username" class="block text-sm font-medium">Username</label>
+                <input id="form-username" name="form-username" type="text" autocomplete="username" class="w-full rounded-lg border border-[#B8D8BA] bg-white px-4 py-3 outline-none transition focus:border-[#006D5F] focus:ring-2 focus:ring-[#006D5F]/20" required>
             </div>
-            <div class="relative flex flex-col items-start">
-                <input class="form-input z-10" type="text" name="form-phone" id="form-phone" placeholder=" ">
-                <label class="absolute top-0 left-2 text-white" for="form-phone">Entrez votre téléphone</label>
+            <div class="space-y-1">
+                <label for="form-phone" class="block text-sm font-medium">Phone number</label>
+                <input id="form-phone" name="form-phone" type="tel" autocomplete="tel" class="w-full rounded-lg border border-[#B8D8BA] bg-white px-4 py-3 outline-none transition focus:border-[#006D5F] focus:ring-2 focus:ring-[#006D5F]/20" required>
             </div>
-            <div class="relative flex flex-col items-start">
-                <input class="form-input z-10" type="email" name="form-email" id="form-email" placeholder=" ">
-                <label class="absolute top-0 left-2 text-white" for="form-email">Entrez votre email</label>
+            <div class="space-y-1">
+                <label for="form-password" class="block text-sm font-medium">Password</label>
+                <input id="form-password" name="form-password" type="password" class="w-full rounded-lg border border-[#B8D8BA] bg-white px-4 py-3 outline-none transition focus:border-[#006D5F] focus:ring-2 focus:ring-[#006D5F]/20" required>
+                <p class="text-xs text-[#2F4858]/60"><span>×</span> 8 caractères minimums</p>
             </div>
-            <div class="flex flex-col items-center gap-3">
-                <button class="px-10 py-5 bg-guideline-6 rounded-xl text-white font-semibold">S'inscrire</button>
-                <a href="/user/login">Se connecter</a>
+
+            <div class="space-y-3">
+                <button type="submit" class="w-full rounded-lg bg-[#006D5F] px-4 py-3 font-medium text-white transition hover:bg-[#2F4858] focus:outline-none focus:ring-2 focus:ring-[#006D5F] focus:ring-offset-2">
+                    S'inscrire
+                </button>
+
+                <button id="redirect-login" type="button" class="w-full rounded-lg border border-[#006D5F] px-4 py-3 font-medium text-[#006D5F] transition hover:bg-[#B8D8BA]/30 focus:outline-none focus:ring-2 focus:ring-[#006D5F] focus:ring-offset-2">
+                    Se connecter
+                </button>
             </div>
         </form>
-    </div>
+    </main>
 </div>
 {% endblock %}
 

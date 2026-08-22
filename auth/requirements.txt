@@ -5,3 +5,5 @@ uvicorn
 cryptography
 sqlalchemy
 psycopg2-binary
+phonenumbers
+werkzeug
