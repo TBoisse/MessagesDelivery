@@ -19,7 +19,7 @@ security = HTTPBearer()
 COOKIE_NAME = "access_token"
 
 # ############################
-# USER
+# CONNEXION
 # ############################
 
 @app.post("/login")
