@@ -1,7 +1,0 @@
-fastapi
-pydantic
-uvicorn
-sqlalchemy
-psycopg2-binary
-hashids
-minio

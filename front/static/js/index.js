@@ -5,7 +5,7 @@ const btnMessageSend = document.getElementById("btn-message-send");
 const btnAddMember = document.getElementById("btn-add-member");
 
 btnSettings.addEventListener("click", () => {
-    window.location.href += "/me";
+    window.location.href += "me";
 })
 
 btnAdd.addEventListener("click", async () => {

@@ -1,18 +1,4 @@
 services:
-  users-server:
-    image: users-server:latest
-    build:
-      context: users
-      dockerfile: Dockerfile
-    expose:
-      - 3003
-    networks:
-      - internal_network
-    environment:
-      POSTGRES_URL: "postgresql://$POSTGRES_USER:$POSTGRES_USER@postgres:5432/$POSTGRES_USER"
-      USERS_KEY: $USERS_KEY
-      MINIO_USER: $MINIO_USER
-      MINIO_PWD: $MINIO_PWD
 
   message-server:
     image: message-server:latest
@@ -41,6 +27,9 @@ services:
       - jwt_public
     environment:
       POSTGRES_URL: "postgresql://$POSTGRES_USER:$POSTGRES_USER@postgres:5432/$POSTGRES_USER"
+      USERS_KEY: $USERS_KEY
+      MINIO_USER: $MINIO_USER
+      MINIO_PWD: $MINIO_PWD
 
   front-server:
     image: front-server:latest
@@ -62,7 +51,9 @@ services:
       - ./nginx/logs:/var/log/nginx
     restart: unless-stopped
     networks:
-      - internal_network
+      internal_network:
+        aliases:
+          - s3.localhost
   postgres:
     image: postgres:16
     restart: unless-stopped
@@ -79,13 +70,10 @@ services:
     image: minio/minio
     command: server /data --console-address ":9001"
 
-    ports:
-      - "9000:9000" # API S3
-      - "9001:9001" # Console MinIO
-
     environment:
       MINIO_ROOT_USER: $MINIO_USER
       MINIO_ROOT_PASSWORD: $MINIO_PWD
+      MINIO_SERVER_URL: $BASE_MINIO_URL
 
     volumes:
       - minio_data:/data

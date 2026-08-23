@@ -1,5 +1,8 @@
 # native imports
 import json
+import os
+from contextlib import asynccontextmanager
+from datetime import timedelta
 # extern imports
 from fastapi import Depends, FastAPI, HTTPException, Response, Request
 from fastapi.security import HTTPBearer
@@ -7,16 +10,84 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from werkzeug.security import generate_password_hash, check_password_hash
 import phonenumbers
+from hashids import Hashids
+from minio import Minio, error
 # intern imports
 from src.requests import LoginRequest, SigninRequest
-from src.tables import User
+from src.tables import User, Contact
 from src.token import decode_token, create_access_token, MAX_AGE
 from src.database import get_db, save_to_db
 
-app = FastAPI()
+COOKIE_NAME = "access_token"
+# hash func
+hashids = Hashids(
+    salt=os.environ.get("USERS_KEY"),
+    min_length=14,
+)
+# minio
+minio_client = Minio(
+    "minio:9000",
+    access_key=os.environ.get("MINIO_USER"),
+    secret_key=os.environ.get("MINIO_PWD"),
+    secure=False,
+)
+minio_public = Minio(
+    "s3.localhost",
+    access_key=os.environ.get("MINIO_USER"),
+    secret_key=os.environ.get("MINIO_PWD"),
+    secure=False,
+)
+USERS_BUCKET = "users"
+DEFAULT_ICON_URL = "icon/default/default.png"
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    if not minio_client.bucket_exists(USERS_BUCKET):
+        minio_client.make_bucket(USERS_BUCKET)
+    try:
+        minio_client.stat_object(
+            USERS_BUCKET,
+            DEFAULT_ICON_URL,
+        )
+    except Exception:
+        minio_client.fput_object(
+            bucket_name=USERS_BUCKET,
+            object_name=DEFAULT_ICON_URL,
+            file_path=str("data/default.png"),
+            content_type="image/png",
+        )
+    yield
+app = FastAPI(lifespan=lifespan)
 security = HTTPBearer()
 
-COOKIE_NAME = "access_token"
+# ############################
+# UTILS
+# ############################
+
+def get_object_name(object_type : str, user_id : str, object_name : str):
+    return f"{object_type}/{user_id}/{object_name}"
+
+def get_url_from_object(object_name : str):
+    return minio_public.presigned_get_object(
+        bucket_name=USERS_BUCKET,
+        object_name=object_name,
+        expires=timedelta(minutes=15),
+    )
+
+def parse_phone_number(phone_number):
+    try:
+        if phone_number[0] == "+":
+            return phonenumbers.parse(phone_number, None)
+        else:
+            return phonenumbers.parse(phone_number, "FR")
+    except Exception:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid phone number.",
+        )
+
+def database_phone(format_phone_number : phonenumbers.PhoneNumber):
+    return f"+{format_phone_number.country_code}{format_phone_number.national_number}"
 
 # ############################
 # CONNEXION
@@ -31,8 +102,10 @@ def login(
     ):
     # TODO : look up async Session and db execute
     #! Direct Cookie class can be passed instead of request
+    format_phone_number = parse_phone_number(login_request.phone_number)
+    db_phone = database_phone(format_phone_number)
     user = db.scalar(
-        select(User).where(User.phone_number == login_request.phone_number)
+        select(User).where(User.phone_number == db_phone)
     )
     if user is None:
         raise HTTPException(
@@ -44,14 +117,14 @@ def login(
             status_code=401,
             detail="Invalid credentials",
         )
-    token = create_access_token(str(login_request.phone_number))
+    token = create_access_token(str(user.phone_number))
     access_tokens : list = json.loads(request.cookies.get(COOKIE_NAME, "[]"))
     phones_decoded = [
         0 if (decoded := decode_token(t))[1] != 200 else decoded[0]["sub"]
         for t in access_tokens
     ]
-    if login_request.phone_number in phones_decoded:
-        user_index = phones_decoded.index(login_request.phone_number)
+    if user.phone_number in phones_decoded:
+        user_index = phones_decoded.index(user.phone_number)
         access_tokens[user_index] = token # mainly reset the expired date
     else:
         access_tokens.append(token)
@@ -78,28 +151,18 @@ def signin(
             status_code=401,
             detail="Password length < 8 caracters",
         )
-    try:
-        if signin_request.phone_number[0] == "+":
-            format_phone_number = phonenumbers.parse(signin_request.phone_number, None)
-        else:
-            format_phone_number = phonenumbers.parse(signin_request.phone_number, "FR")
-    except Exception:
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid phone number",
-        )
+    format_phone_number = parse_phone_number(signin_request.phone_number)
     if not phonenumbers.is_possible_number(format_phone_number):
         raise HTTPException(
             status_code=401,
-            detail="Invalid phone number",
+            detail="Invalid phone number.",
         )
-
     user = User(
         username=signin_request.username,
-        phone_number=signin_request.phone_number,
+        phone_number=database_phone(format_phone_number),
         password_hash=generate_password_hash(signin_request.password),
+        icon_url = None
     )
-
     message, code = save_to_db(db, user)
     if code != 200:
         raise HTTPException(
@@ -107,7 +170,7 @@ def signin(
             detail=message
         )
 
-    token = create_access_token(str(signin_request.phone_number))
+    token = create_access_token(str(user.phone_number))
     access_tokens : list = json.loads(request.cookies.get(COOKIE_NAME, "[]"))
     access_tokens.append(token)
     user_index = len(access_tokens) - 1
@@ -121,6 +184,62 @@ def signin(
         max_age=MAX_AGE,
     )
     return {"user_index" : user_index}
+
+# ############################
+# USERS
+# ############################
+
+@app.get("/me/user")
+def get_me(request : Request, db : Session = Depends(get_db)):
+    try:
+        user_id = int(request.headers.get("X-User-Id"))
+    except Exception:
+        raise HTTPException(status_code=409, detail="Issue happened internaly.")
+    user = db.scalar(
+        select(User).where(User.user_id == user_id)
+    )
+    if not user:
+        raise HTTPException(status_code=401, detail="User not found.")
+    contacts = db.scalars(
+        select(User)
+        .join(Contact, User.user_id == Contact.contact_id)
+        .where(Contact.user_id == user_id)
+    )
+    return {
+        "username" : user.username,
+        "phone_number" : user.phone_number,
+        "url" : get_url_from_object(user.icon_url if user.icon_url else DEFAULT_ICON_URL),
+        "contacts" : [
+            {
+                "username" : contact.username,
+                "user_id" : hashids.encode(contact.user_id),
+                "url" : get_url_from_object(contact.icon_url if contact.icon_url else DEFAULT_ICON_URL)
+            } 
+            for contact in contacts
+        ]
+    }
+
+@app.get("/me/icon")
+def get_icon(request : Request):
+    try:
+        user_id = int(request.headers.get("X-User-Id"))
+    except Exception:
+        raise HTTPException(status_code=401)
+    return {"url" : ""}
+
+@app.put("/me/icon")
+def put_icon(request : Request):
+    try:
+        user_id = int(request.headers.get("X-User-Id"))
+    except Exception:
+        raise HTTPException(status_code=401)
+    object_name = get_object_name("icons", hashids.encode(user_id), "icons.png")
+    presigned_url = minio_public.presigned_put_object(
+        bucket_name=USERS_BUCKET,
+        object_name=object_name,
+        expires=timedelta(minutes=1),
+    )
+    return {"url" : presigned_url}
 
 # ############################
 # ADMIN
