@@ -11,3 +11,18 @@ class User(Base):
     username = Column(String(100), nullable=False)
     phone_number = Column(String(30), nullable=False, unique=True)
     password_hash = Column(String(255), nullable=False)
+
+class Contact(Base):
+    __tablename__ = "contacts"
+
+    user_id = Column(
+        Integer,
+        ForeignKey("users.user_id"),
+        primary_key=True,
+    )
+
+    contact_id = Column(
+        Integer,
+        ForeignKey("users.user_id"),
+        primary_key=True,
+    )

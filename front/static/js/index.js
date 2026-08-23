@@ -4,6 +4,10 @@ const btnSettings = document.getElementById("btn-settings");
 const btnMessageSend = document.getElementById("btn-message-send");
 const btnAddMember = document.getElementById("btn-add-member");
 
+btnSettings.addEventListener("click", () => {
+    window.location.href += "/me";
+})
+
 btnAdd.addEventListener("click", async () => {
     showPopup();
     showPopupType("popup-create-chat");

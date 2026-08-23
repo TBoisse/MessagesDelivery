@@ -9,4 +9,4 @@ COPY src src
 
 EXPOSE 3003
 
-CMD ["uvicorn", "app:app",  "--host",  "0.0.0.0", "--port", "3002", "--log-level", "debug"]
+CMD ["uvicorn", "app:app",  "--host",  "0.0.0.0", "--port", "3003", "--log-level", "debug"]

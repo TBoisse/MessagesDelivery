@@ -155,9 +155,6 @@ def update_chat(request : Request, add_member_request: AddChatMemberRequest, db:
         )
     return {"message": "Member added"}, 200
 
-    
-
-
 @app.get("/message/{encoded_chat_id}")
 def get_messages(request : Request, encoded_chat_id: str, db: Session = Depends(get_db)):
     try:
@@ -181,7 +178,6 @@ def get_messages(request : Request, encoded_chat_id: str, db: Session = Depends(
         m.user_id: m.username
         for m in members
     }
-
     messages = db.scalars(
         select(Message)
         .where(Message.conversation_id == chat_id)
@@ -216,7 +212,6 @@ def create_message(request : Request, create_request: CreateMessageRequest, db: 
         sender_id=user_id,
         content=create_request.content
     )
-
 
     status, code = save_to_db(db, message)
     if code != 200:

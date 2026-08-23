@@ -1,0 +1,43 @@
+.profile-field {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    border: 1px solid #B8D8BA;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: white;
+}
+
+.profile-field:focus-within {
+    border-color: #006D5F;
+    box-shadow: 0 0 0 2px rgba(0, 109, 95, 0.15);
+}
+
+.profile-field input {
+    width: 100%;
+    outline: none;
+    background: transparent;
+}
+
+.contact {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+}
+
+.contact:hover {
+    background: #FFF4C7;
+}
+
+.contact-remove {
+    margin-left: auto;
+    opacity: 0;
+    color: #dc2626;
+}
+
+.contact:hover .contact-remove {
+    opacity: 1;
+}

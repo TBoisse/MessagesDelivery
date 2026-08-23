@@ -38,3 +38,13 @@ async def signin(request : Request):
         request=request,
         name="signin.html"
     )
+
+@app.get("/me")
+def settings(request : Request):
+    """
+    Settings page.
+    """
+    return templates.TemplateResponse(
+        request=request,
+        name="settings.html"
+    )

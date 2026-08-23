@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Message Delivery - Settings{% endblock %}
+
+{% block extra_styles %}
+<style>
+    @import url("/static/css/settings.css");
+</style>
+{% endblock %}
+
+{% block extra_content %}
+<div class="min-h-screen bg-[#FFF4C7] text-[#2F4858] flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+        <section class="relative rounded-2xl bg-white p-6 shadow-sm space-y-6">
+            <div class="absolute rounded-t-2xl bg-[#006D5F] w-full h-[100px] top-0 left-0"></div>
+            <img id="btn-homepage" class="absolute w-10 top-5 left-5 cursor-pointer !my-0" src="/static/image/mask/white-back.svg">
+            <div class="flex justify-center">
+                <label for="profile-image" class="relative cursor-pointer group">
+                    <img src="https://api.dicebear.com/9.x/initials/svg?seed=%5B%5Btummy%5D%5D" alt="Photo de profil" class="h-24 w-24 rounded-full border-2 border-[#B8D8BA] object-cover">
+                    <span
+                        class="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 text-sm text-white opacity-0 transition group-hover:opacity-100">
+                        Modifier
+                    </span>
+                    <input id="profile-image" name="profile-image" type="file" accept="image/*" class="hidden">
+                </label>
+            </div>
+
+            <div class="space-y-4">
+                <div class="profile-field">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232F4858' stroke-width='2'%3E%3Cpath d='M20 21a8 8 0 0 0-16 0'/%3E%3Ccircle cx='12' cy='7' r='4'/%3E%3C/svg%3E" alt="" class="h-5 w-5 shrink-0">
+                    <input id="input-username" type="text" name="input-username" value="[[tummy]]" placeholder="Username">
+                </div>
+
+                <div class="profile-field">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232F4858' stroke-width='2'%3E%3Cpath d='M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.62 2.64a2 2 0 0 1-.45 2.11L8.01 9.74a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.86.29 1.74.5 2.64.62A2 2 0 0 1 22 16.92z'/%3E%3C/svg%3E" alt="" class="h-5 w-5 shrink-0">
+                    <input id="input-phone" type="tel" name="input-phone" value="[[tummy]]" placeholder="Téléphone">
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                <h2 class="text-lg font-semibold">Contacts</h2>
+
+                <div class="h-52 overflow-y-auto rounded-lg border border-[#B8D8BA] p-2 space-y-1">
+                    <div class="contact">
+                        <img src="https://api.dicebear.com/9.x/initials/svg?seed=%5B%5Btummy%5D%5D" alt=""
+                            class="h-10 w-10 rounded-full">
+                        <span class="font-medium">[[tummy]]</span>
+                        <button type="button" class="contact-remove" aria-label="Supprimer le contact">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23dc2626' stroke-width='2.5'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E"
+                                alt="" class="h-5 w-5">
+                        </button>
+                    </div>
+
+                    <div class="contact">
+                        <img src="https://api.dicebear.com/9.x/initials/svg?seed=%5B%5Btummy%5D%5D" alt=""
+                            class="h-10 w-10 rounded-full">
+                        <span class="font-medium">[[tummy]]</span>
+                        <button type="button" class="contact-remove" aria-label="Supprimer le contact">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23dc2626' stroke-width='2.5'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E"
+                                alt="" class="h-5 w-5">
+                        </button>
+                    </div>
+
+                    <div class="contact">
+                        <img src="https://api.dicebear.com/9.x/initials/svg?seed=%5B%5Btummy%5D%5D" alt=""
+                            class="h-10 w-10 rounded-full">
+                        <span class="font-medium">[[tummy]]</span>
+                        <button type="button" class="contact-remove" aria-label="Supprimer le contact">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23dc2626' stroke-width='2.5'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E"
+                                alt="" class="h-5 w-5">
+                        </button>
+                    </div>
+
+                    <div class="contact">
+                        <img src="https://api.dicebear.com/9.x/initials/svg?seed=%5B%5Btummy%5D%5D" alt=""
+                            class="h-10 w-10 rounded-full">
+                        <span class="font-medium">[[tummy]]</span>
+                        <button type="button" class="contact-remove" aria-label="Supprimer le contact">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23dc2626' stroke-width='2.5'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E"
+                                alt="" class="h-5 w-5">
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex gap-2">
+                    <input type="text" name="contact" placeholder="Username du contact"
+                        class="min-w-0 flex-1 rounded-lg border border-[#B8D8BA] px-4 py-3 outline-none transition focus:border-[#006D5F] focus:ring-2 focus:ring-[#006D5F]/20">
+
+                    <button type="button"
+                        class="rounded-lg bg-[#006D5F] px-5 py-3 font-medium text-white transition hover:bg-[#2F4858]">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+            <button type="button"
+                class="w-full rounded-lg bg-red-600 px-4 py-3 font-medium text-white transition hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                Supprimer le compte
+            </button>
+        </section>
+    </div>
+</div>
+
+{% endblock %}
+{% block extra_scripts %}
+<script src="/static/js/utils.js"></script>
+<script src="/static/js/settings.js"></script>
+{% endblock %}
